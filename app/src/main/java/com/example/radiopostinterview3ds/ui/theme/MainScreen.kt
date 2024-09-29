@@ -14,19 +14,26 @@ import com.example.radiopostinterview3ds.data.RadioStationEntity
 fun MainScreen(viewModel: RadioStationViewModel) {
     val stations = viewModel.stations.observeAsState(emptyList())
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-    ) {
-        items(stations.value.size) { index ->
-            val station = stations.value[index]
-            RadioStationItem(
-                station = station,
-                onFavoriteToggle = { viewModel.toggleFavorite(station) }  // Pass favorite toggle function
-            )
+    if (stations.value.isEmpty()) {
+        // Show a message if no stations are available
+        Text("No stations available")
+    } else {
+        // Show the list of stations
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp),
+        ) {
+            items(stations.value.size) { index ->
+                val station = stations.value[index]
+                RadioStationItem(
+                    station = station,
+                    onFavoriteToggle = { viewModel.toggleFavorite(station) }
+                )
+            }
         }
     }
 }
+
 
 @Composable
 fun RadioStationItem(station: RadioStationEntity, onFavoriteToggle: (RadioStationEntity) -> Unit) {

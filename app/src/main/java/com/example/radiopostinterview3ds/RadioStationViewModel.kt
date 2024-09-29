@@ -12,15 +12,13 @@ class RadioStationViewModel(
     private val repository: RadioStationRepository
 ) : ViewModel() {
 
-    // Convert Flow to LiveData for the UI
     val stations: LiveData<List<RadioStationEntity>> = repository.getStations().asLiveData()
 
     val favoriteStations: LiveData<List<RadioStationEntity>> = repository.getFavoriteStations().asLiveData()
 
-    // Fetch stations from the API and save them to Room database
     fun fetchStations() {
         viewModelScope.launch {
-            repository.fetchStationsFromApi()
+            repository.fetchStations()
         }
     }
 
