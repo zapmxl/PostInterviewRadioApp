@@ -20,6 +20,7 @@ interface RadioStationDao {
     @Query("SELECT * FROM radio_stations WHERE isFavorite = 1")
     fun getFavoriteStations(): Flow<List<RadioStationEntity>>
 
-    @Query("UPDATE radio_stations SET isFavorite = :isFavorite WHERE id = :id")
-    suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean)
+    // Update favorite status by station_id
+    @Query("UPDATE radio_stations SET isFavorite = :isFavorite WHERE station_id = :stationId")
+    suspend fun updateFavoriteStatus(stationId: String, isFavorite: Boolean)
 }

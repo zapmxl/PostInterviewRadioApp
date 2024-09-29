@@ -41,18 +41,20 @@ fun RadioStationItem(station: RadioStationEntity, onFavoriteToggle: (RadioStatio
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(4.dp)  // Use CardDefaults for elevation
+        elevation = CardDefaults.elevatedCardElevation(4.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(text = station.name, style = MaterialTheme.typography.titleMedium)
-            Text(text = station.description)
+            // Display fallback text for missing data
+            Text(text = station.title ?: "Unknown Station", style = MaterialTheme.typography.titleMedium)
+            Text(text = station.description ?: "No description available")
             Button(
                 onClick = { onFavoriteToggle(station) }  // Toggle favorite
             ) {
-                Text(text = if (station.isFavorite) "Remove favorite" else "Favorite")
+                Text(text = if (station.isFavorite) "Remove Favorite" else "Favorite")
             }
         }
     }
 }
+

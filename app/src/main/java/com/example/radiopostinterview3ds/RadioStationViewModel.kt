@@ -24,7 +24,7 @@ class RadioStationViewModel(
 
     fun toggleFavorite(station: RadioStationEntity) {
         viewModelScope.launch {
-            repository.updateFavoriteStatus(station.id, !station.isFavorite)
+            repository.updateFavoriteStatus(station.station_id, !station.isFavorite)  // Use station_id
         }
     }
 }

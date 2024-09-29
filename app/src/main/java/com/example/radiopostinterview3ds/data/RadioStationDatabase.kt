@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [RadioStationEntity::class], version = 1)
+@Database(entities = [RadioStationEntity::class], version = 2)  // Updated version to 2
 abstract class RadioStationDatabase : RoomDatabase() {
 
     abstract fun radioStationDao(): RadioStationDao
@@ -20,7 +20,9 @@ abstract class RadioStationDatabase : RoomDatabase() {
                     context.applicationContext,
                     RadioStationDatabase::class.java,
                     "radio_station_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()  // Wipes and rebuilds instead of migrating
+                    .build()
                 INSTANCE = instance
                 instance
             }
