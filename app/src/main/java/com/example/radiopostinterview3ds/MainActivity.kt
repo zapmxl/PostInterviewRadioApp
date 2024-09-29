@@ -1,6 +1,7 @@
 package com.example.radiopostinterview3ds
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -36,6 +37,8 @@ class MainActivity : ComponentActivity() {
         networkMonitor.observe(this) { isConnected ->
             if (isConnected == true) {
                 viewModel.fetchStations()
+            } else {
+                Toast.makeText(this, "You are offline. Showing cached data.", Toast.LENGTH_SHORT).show()
             }
         }
 
