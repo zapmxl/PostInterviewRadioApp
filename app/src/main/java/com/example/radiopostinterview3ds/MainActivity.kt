@@ -4,11 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material3.Text  // Import for Material3 Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState  // LiveData integration with Compose
-import androidx.lifecycle.viewmodel.compose.viewModel  // ViewModel integration with Compose
-import com.example.radiopostinterview3ds.ui.theme.RadioStationItem  // Import for RadioStationItem
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import com.example.radiopostinterview3ds.ui.theme.FavoritesScreen
+import com.example.radiopostinterview3ds.ui.theme.MainScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -17,26 +18,27 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Fetch the radio station details for a specific station
-        viewModel.fetchRadioStationDetails("your_station_id")
+        // Fetch data from the API
+        viewModel.fetchStations()
 
-        // Set content view with Jetpack Compose
         setContent {
-            MainScreen(viewModel)
+            // State to handle screen switching between MainScreen and FavoritesScreen
+            var showFavorites by remember { mutableStateOf(false) }
+
+            Column {
+                // Toggle between All Stations and Favorites
+                Button(onClick = { showFavorites = !showFavorites }) {
+                    Text(text = if (showFavorites) "Show All Stations" else "Show Favorites")
+                }
+
+                if (showFavorites) {
+                    // Show Favorites Screen
+                    FavoritesScreen(viewModel = viewModel)
+                } else {
+                    // Show Main Screen with All Stations
+                    MainScreen(viewModel = viewModel)
+                }
+            }
         }
-    }
-}
-
-@Composable
-fun MainScreen(viewModel: RadioStationViewModel = viewModel()) {
-    val radioStation = viewModel.radioStation.observeAsState()
-    val error = viewModel.error.observeAsState()
-
-    if (error.value != null) {
-        Text(text = "Error: ${error.value}")
-    } else if (radioStation.value != null) {
-        RadioStationItem(station = radioStation.value!!, onFavoriteToggle = {})
-    } else {
-        Text(text = "Loading...")
     }
 }

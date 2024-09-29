@@ -8,7 +8,7 @@ data class RadioStationEntity(
     @PrimaryKey val id: String,
     val name: String,
     val description: String,
-    val streamUrl: String,
     val imageUrl: String,
-    val isFavorite: Boolean
+    val streamUrl: String,
+    var isFavorite: Boolean = false  // New favorite field
 )

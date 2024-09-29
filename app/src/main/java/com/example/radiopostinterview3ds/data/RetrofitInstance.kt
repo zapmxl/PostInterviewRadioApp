@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    private const val BASE_URL = "https://public.radio.co/api/v2/"  // Ensure trailing slash
+    private const val BASE_URL = "https://www.3ds.gr/apptest/"  // API Base URL
 
     val api: RadioStationApi by lazy {
         Retrofit.Builder()
