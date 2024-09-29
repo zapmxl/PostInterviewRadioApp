@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.*
 import androidx.lifecycle.ViewModelProvider
@@ -53,13 +52,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp(viewModel: RadioStationViewModel, isConnected: NetworkMonitor, isDarkTheme: Boolean, onThemeToggle: () -> Unit) {
-    // Entire screen background using Surface
+    var searchText by remember { mutableStateOf("") }
+    var showFavorites by remember { mutableStateOf(false) }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background // Apply the background color dynamically
+        color = MaterialTheme.colorScheme.background
     ) {
-        var showFavorites by remember { mutableStateOf(false) }
-
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             if (isConnected.value == false) {
                 Text(
@@ -70,7 +69,6 @@ fun MyApp(viewModel: RadioStationViewModel, isConnected: NetworkMonitor, isDarkT
                 )
             }
 
-            // Buttons in the same row
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
@@ -79,7 +77,7 @@ fun MyApp(viewModel: RadioStationViewModel, isConnected: NetworkMonitor, isDarkT
                     Text(text = if (showFavorites) "Show All Stations" else "Show Favorites")
                 }
 
-                Spacer(modifier = Modifier.weight(1f)) // Spacer to push the theme button to the right
+                Spacer(modifier = Modifier.weight(1f))
 
                 Button(
                     onClick = { onThemeToggle() },
@@ -91,11 +89,20 @@ fun MyApp(viewModel: RadioStationViewModel, isConnected: NetworkMonitor, isDarkT
                 }
             }
 
-            // Content area
+            // Search bar
+            TextField(
+                value = searchText,
+                onValueChange = { searchText = it },
+                label = { Text("Search Stations") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            )
+
             if (showFavorites) {
-                FavoritesScreen(viewModel = viewModel)
+                FavoritesScreen(viewModel = viewModel, searchText = searchText)
             } else {
-                MainScreen(viewModel = viewModel)
+                MainScreen(viewModel = viewModel, searchText = searchText)
             }
         }
     }

@@ -1,23 +1,37 @@
 package com.example.radiopostinterview3ds.ui.theme
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.radiopostinterview3ds.RadioStationViewModel
+import com.example.radiopostinterview3ds.data.RadioStationEntity
 
 @Composable
-fun FavoritesScreen(viewModel: RadioStationViewModel) {
-    val favoriteStations = viewModel.favoriteStations.observeAsState(emptyList())
+fun FavoritesScreen(viewModel: RadioStationViewModel, searchText: String) {
+    val favoriteStations by viewModel.favoriteStations.collectAsState()
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(favoriteStations.value.size) { index ->
-            val station = favoriteStations.value[index]
-            RadioStationItem(
-                station = station,
-                onFavoriteToggle = { viewModel.toggleFavorite(station) }
-            )
+    // Filter favorite stations based on search text
+    val filteredFavorites = favoriteStations.filter {
+        it.title?.contains(searchText, ignoreCase = true) == true
+    }
+
+    if (filteredFavorites.isEmpty()) {
+        Text("No favorite stations available")
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp),
+        ) {
+            items(filteredFavorites.size) { index ->
+                val station = filteredFavorites[index]
+                RadioStationItem(
+                    station = station,
+                    onFavoriteToggle = { viewModel.toggleFavorite(station) }
+                )
+            }
         }
     }
 }
