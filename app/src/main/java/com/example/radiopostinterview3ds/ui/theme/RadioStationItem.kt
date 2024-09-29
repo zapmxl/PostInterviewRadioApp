@@ -3,17 +3,19 @@ package com.example.radiopostinterview3ds.ui.theme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Modifier // Import for Modifier
+import androidx.compose.ui.unit.dp // Import for dp
 import com.example.radiopostinterview3ds.data.RadioStationEntity
-import com.example.radiopostinterview3ds.ExoPlayerManager
-import androidx.compose.ui.platform.LocalContext
 
 @Composable
-fun RadioStationItem(station: RadioStationEntity, onFavoriteToggle: (RadioStationEntity) -> Unit) {
-    val context = LocalContext.current  // Get the context at the beginning
-    var exoPlayerManager by remember { mutableStateOf<ExoPlayerManager?>(null) }
-    var isPlaying by remember { mutableStateOf(false) }
+fun RadioStationItem(
+    station: RadioStationEntity,
+    onFavoriteToggle: (RadioStationEntity) -> Unit,
+    currentPlayingStation: RadioStationEntity?,
+    onPlay: (RadioStationEntity) -> Unit,
+    onStop: () -> Unit
+) {
+    val isPlaying = currentPlayingStation == station
 
     Card(
         modifier = Modifier
@@ -21,37 +23,25 @@ fun RadioStationItem(station: RadioStationEntity, onFavoriteToggle: (RadioStatio
             .padding(8.dp),
         elevation = CardDefaults.elevatedCardElevation(4.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(text = station.title ?: "Unknown Station", style = MaterialTheme.typography.titleMedium)
             Text(text = station.description ?: "No description available")
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Button(onClick = {
                     if (isPlaying) {
-                        exoPlayerManager?.pause()
+                        onStop() // Call stop if currently playing
                     } else {
-                        if (exoPlayerManager == null) {
-                            exoPlayerManager = ExoPlayerManager(context)  // Use the context here
-                        }
-                        exoPlayerManager?.playStream(station.streaming_url ?: "") // Provide empty string if null
+                        onPlay(station) // Call play if not playing
                     }
-                    isPlaying = !isPlaying
                 }) {
-                    Text(text = if (isPlaying) "Pause" else "Play")
+                    Text(text = if (isPlaying) "Stop" else "Play") // Change button text based on state
                 }
 
                 Button(onClick = { onFavoriteToggle(station) }) {
                     Text(text = if (station.isFavorite) "Remove Favorite" else "Favorite")
                 }
             }
-        }
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            exoPlayerManager?.release()
         }
     }
 }

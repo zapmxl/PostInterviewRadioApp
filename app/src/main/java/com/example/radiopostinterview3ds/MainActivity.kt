@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
         val database = RadioStationDatabase.getDatabase(this)
         val repository = RadioStationRepository(database.radioStationDao(), this)
-        val factory = RadioStationViewModelFactory(repository)
+        val factory = RadioStationViewModelFactory(repository, this) // Pass context here
 
         viewModel = ViewModelProvider(this, factory).get(RadioStationViewModel::class.java)
 

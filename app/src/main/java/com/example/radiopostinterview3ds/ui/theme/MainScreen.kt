@@ -10,13 +10,14 @@ import com.example.radiopostinterview3ds.RadioStationViewModel
 import com.example.radiopostinterview3ds.data.RadioStationEntity
 
 @Composable
-fun MainScreen(viewModel: RadioStationViewModel, searchText: String) {
-    val stations by viewModel.stations.collectAsState()
-
-    // Filter stations based on the search text
-    val filteredStations = stations.filter {
-        it.title?.contains(searchText, ignoreCase = true) == true
-    }
+fun MainScreen(
+    viewModel: RadioStationViewModel,
+    searchText: String
+) {
+    // Collecting the StateFlow directly
+    val stations by viewModel.stations.collectAsState(emptyList())
+    val filteredStations by viewModel.filterStations(searchText).collectAsState(emptyList()) // Collect filtered stations
+    var currentPlayingStation by remember { mutableStateOf<RadioStationEntity?>(null) }
 
     if (filteredStations.isEmpty()) {
         Text("No stations available")
@@ -29,7 +30,22 @@ fun MainScreen(viewModel: RadioStationViewModel, searchText: String) {
                 val station = filteredStations[index]
                 RadioStationItem(
                     station = station,
-                    onFavoriteToggle = { viewModel.toggleFavorite(station) }
+                    onFavoriteToggle = { viewModel.toggleFavorite(station) },
+                    currentPlayingStation = currentPlayingStation,
+                    onPlay = { newStation ->
+                        // Stop the current playing station if it's different
+                        if (currentPlayingStation != newStation) {
+                            currentPlayingStation?.let {
+                                viewModel.stopPlaying()  // Stop previous station
+                            }
+                            currentPlayingStation = newStation
+                            viewModel.playStation(newStation)  // Start the new station
+                        }
+                    },
+                    onStop = {
+                        currentPlayingStation = null
+                        viewModel.stopPlaying()  // Stop the current station
+                    }
                 )
             }
         }

@@ -7,7 +7,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.radiopostinterview3ds.RadioStationViewModel
-import com.example.radiopostinterview3ds.data.RadioStationEntity
 
 @Composable
 fun FavoritesScreen(viewModel: RadioStationViewModel, searchText: String) {
@@ -29,7 +28,14 @@ fun FavoritesScreen(viewModel: RadioStationViewModel, searchText: String) {
                 val station = filteredFavorites[index]
                 RadioStationItem(
                     station = station,
-                    onFavoriteToggle = { viewModel.toggleFavorite(station) }
+                    onFavoriteToggle = { viewModel.toggleFavorite(station) },
+                    currentPlayingStation = null, // Pass null for currentPlayingStation for now
+                    onPlay = { newStation ->
+                        viewModel.playStation(newStation) // Call playStation with the new station
+                    },
+                    onStop = {
+                        viewModel.stopPlaying() // Call stopPlaying when stopping
+                    }
                 )
             }
         }
