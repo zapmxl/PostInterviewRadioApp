@@ -23,21 +23,17 @@
                         val response = RetrofitInstance.api.getRadioStations()
                         if (response.isSuccessful) {
                             response.body()?.let { stations ->
-                                Log.d("RadioStationRepository", "API response: $stations")
                                 stationDao.insertStations(stations)  // Save to Room database
                             }
-                        } else {
-                            Log.e("RadioStationRepository", "API call failed: ${response.errorBody()}")
                         }
                     } catch (e: Exception) {
-                        Log.e("RadioStationRepository", "Exception during API call", e)
+                        // Log error
                     }
                 } else {
-                    Log.d("RadioStationRepository", "No network available, loading from cache")
+                    // Log or notify: loading from cache
                 }
             }
         }
-
 
         // Get all stations from Room database
         fun getStations(): Flow<List<RadioStationEntity>> = stationDao.getAllStations()
