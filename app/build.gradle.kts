@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp") version "1.9.0-1.0.12"
-    id("com.github.gmazzo.buildconfig") // Apply the buildconfig plugin here
+    id("com.github.gmazzo.buildconfig") version "3.1.0"
 }
 
 android {
