@@ -1,4 +1,3 @@
-// RadioStationViewModel.kt
 package com.example.radiopostinterview3ds
 
 import android.content.Context
@@ -20,8 +19,10 @@ class RadioStationViewModel(
     private val _favoriteStations = MutableStateFlow<List<RadioStationEntity>>(emptyList())
     val favoriteStations: StateFlow<List<RadioStationEntity>> = _favoriteStations.asStateFlow()
 
+    private val _currentPlayingStation = MutableStateFlow<RadioStationEntity?>(null) // Store current playing station
+    val currentPlayingStation: StateFlow<RadioStationEntity?> = _currentPlayingStation.asStateFlow()
+
     private var exoPlayerManager: ExoPlayerManager? = null // Store the player manager
-    private var currentPlayingStation: RadioStationEntity? = null // Keep track of the currently playing station
 
     init {
         fetchStations()
@@ -48,20 +49,20 @@ class RadioStationViewModel(
     }
 
     fun playStation(station: RadioStationEntity) {
-        if (currentPlayingStation != null && currentPlayingStation != station) {
+        if (_currentPlayingStation.value != null && _currentPlayingStation.value != station) {
             stopPlaying() // Stop the current station if it's different
         }
         if (exoPlayerManager == null) {
             exoPlayerManager = ExoPlayerManager(context) // Create the ExoPlayerManager
         }
         exoPlayerManager?.playStream(station.streaming_url ?: "")
-        currentPlayingStation = station // Update the currently playing station
+        _currentPlayingStation.value = station // Update the currently playing station
     }
 
     fun stopPlaying() {
         exoPlayerManager?.stop()
         exoPlayerManager = null // Clear the player manager reference
-        currentPlayingStation = null // Reset the currently playing station
+        _currentPlayingStation.value = null // Reset the currently playing station
     }
 
     fun filterStations(searchText: String): Flow<List<RadioStationEntity>> {

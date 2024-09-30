@@ -7,7 +7,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.radiopostinterview3ds.RadioStationViewModel
-import com.example.radiopostinterview3ds.data.RadioStationEntity
 
 @Composable
 fun MainScreen(
@@ -16,7 +15,7 @@ fun MainScreen(
 ) {
     // Collecting the StateFlow directly
     val filteredStations by viewModel.filterStations(searchText).collectAsState(emptyList()) // Collect filtered stations
-    var currentPlayingStation by remember { mutableStateOf<RadioStationEntity?>(null) }
+    val currentPlayingStation by viewModel.currentPlayingStation.collectAsState() // Collect current playing station
 
     if (filteredStations.isEmpty()) {
         Text("No stations available")
@@ -32,18 +31,10 @@ fun MainScreen(
                     onFavoriteToggle = { viewModel.toggleFavorite(station) },
                     currentPlayingStation = currentPlayingStation,
                     onPlay = { newStation ->
-                        // Stop the current playing station if it's different
-                        if (currentPlayingStation != newStation) {
-                            currentPlayingStation?.let {
-                                viewModel.stopPlaying()  // Stop previous station
-                            }
-                            currentPlayingStation = newStation
-                            viewModel.playStation(newStation)  // Start the new station
-                        }
+                        viewModel.playStation(newStation) // Play station
                     },
                     onStop = {
-                        currentPlayingStation = null
-                        viewModel.stopPlaying()  // Stop the current station
+                        viewModel.stopPlaying() // Stop the current station
                     }
                 )
             }

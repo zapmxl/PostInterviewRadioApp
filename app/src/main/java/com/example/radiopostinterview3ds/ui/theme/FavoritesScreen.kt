@@ -29,7 +29,7 @@ fun FavoritesScreen(viewModel: RadioStationViewModel, searchText: String) {
                 RadioStationItem(
                     station = station,
                     onFavoriteToggle = { viewModel.toggleFavorite(station) },
-                    currentPlayingStation = null, // Pass null for currentPlayingStation for now
+                    currentPlayingStation = viewModel.currentPlayingStation.collectAsState().value, // Observe current playing station
                     onPlay = { newStation ->
                         viewModel.playStation(newStation) // Call playStation with the new station
                     },
