@@ -46,9 +46,9 @@ A simple Radio Station App built using Kotlin that allows users to browse radio 
 4. Sync the project with Gradle files.
 5. Build and run the app on an emulator or a physical device.
 
-###Code Structure
+### Code Structure
 
-##Project Structure
+## Project Structure
 
   ├── data
   │   ├── RadioStationDatabase.kt   # Database setup
@@ -71,7 +71,7 @@ A simple Radio Station App built using Kotlin that allows users to browse radio 
   ├── RadioStationViewModel.kt      # ViewModel for managing UI state
   ├── RadioStationViewModelFactory.kt # Factory for ViewModel
 
-###Highlights of Key Files
+### Highlights of Key Files
 
  - MainActivity.kt: Hosts the main UI of the application using Jetpack Compose.
  - RadioStationViewModel.kt: Manages the state of radio stations and controls playback using ExoPlayer.
@@ -79,37 +79,38 @@ A simple Radio Station App built using Kotlin that allows users to browse radio 
  - ExoPlayerManager.kt: Manages audio playback functionality using ExoPlayer.
  - NetworkMonitor.kt & NetworkUtils.kt: Provides network monitoring and utility functions to detect online/offline status.
 
-###UI Components
+### UI Components
 
  - MainScreen.kt: Displays the list of all radio stations fetched from the API or local database.
  - FavoritesScreen.kt: Displays the list of favorite stations.
  - RadioStationItem.kt: Represents individual radio station items, showing options to play/stop and mark as favorite.
 
-###How It Works
+### How It Works
 
  - The app fetches radio stations from the API upon launch and stores them in a local Room database.
  - Users can search for stations, mark them as favorites, and play/pause radio streams using ExoPlayer.
  - The app handles network connectivity changes gracefully, allowing offline access to cached data.
  - A StateFlow-driven ViewModel ensures seamless state management and updates to the UI
 
-###How to Test
+### How to Test
 
  - API Functionality: Launch the app to verify that it fetches data from the API.
  - -Offline Functionality: Disconnect the internet and relaunch the app to test cached data.
  - Play/Stop Functionality: Test multiple radio stations to verify seamless playback and state changes.
  - Search Functionality: Use the search bar to filter radio stations by name.
 
-###Possible Future Improvements
+### Possible Future Improvements
 
  - Implement advanced pagination with more complex datasets.
  - Add playback controls (e.g., next, previous, seek) for radio streams.
  - Enhance error messages with detailed user guidance.
 
-###Conclusion
+### Conclusion
 
 The Radio Station App provides a simple yet complete solution for browsing, searching, and playing radio stations with offline support. The combination of Jetpack Compose, Retrofit, Room, and ExoPlayer delivers a smooth and modern user experience.
 
 Feel free to reach out for any questions or suggestions regarding this project!
 
 Author: Michail Mallis
+
 GitHub: zapmxl
