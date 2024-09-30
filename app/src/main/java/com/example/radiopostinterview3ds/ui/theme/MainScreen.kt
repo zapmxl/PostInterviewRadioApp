@@ -15,7 +15,6 @@ fun MainScreen(
     searchText: String
 ) {
     // Collecting the StateFlow directly
-    val stations by viewModel.stations.collectAsState(emptyList())
     val filteredStations by viewModel.filterStations(searchText).collectAsState(emptyList()) // Collect filtered stations
     var currentPlayingStation by remember { mutableStateOf<RadioStationEntity?>(null) }
 

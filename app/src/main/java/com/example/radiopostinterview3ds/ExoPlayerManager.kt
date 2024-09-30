@@ -9,7 +9,7 @@ class ExoPlayerManager(context: Context) {
     private val player: ExoPlayer = ExoPlayer.Builder(context).build()
 
     fun playStream(url: String) {
-        val mediaItem = MediaItem.fromUri(url)
+        val mediaItem = MediaItem.fromUri(url) // Use the new MediaItem API
         player.setMediaItem(mediaItem)
         player.prepare()
         player.play()
