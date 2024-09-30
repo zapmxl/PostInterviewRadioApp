@@ -90,14 +90,7 @@ A simple Radio Station App built using Kotlin that allows users to browse radio 
  - The app fetches radio stations from the API upon launch and stores them in a local Room database.
  - Users can search for stations, mark them as favorites, and play/pause radio streams using ExoPlayer.
  - The app handles network connectivity changes gracefully, allowing offline access to cached data.
- - A StateFlow-driven ViewModel ensures seamless state management and updates to the UI.
-
-### How It Works
- 
- - The app fetches radio stations from the API upon launch and stores them in a local Room database.
- - Users can search for stations, mark them as favorites, and play/pause radio streams using ExoPlayer.
- - The app handles network connectivity changes gracefully, allowing offline access to cached data.
- - A StateFlow-driven ViewModel ensures seamless state management and updates to the UI.
+ - A StateFlow-driven ViewModel ensures seamless state management and updates to the UI
 
 ###How to Test
 
@@ -107,15 +100,16 @@ A simple Radio Station App built using Kotlin that allows users to browse radio 
  - Search Functionality: Use the search bar to filter radio stations by name.
 
 ###Possible Future Improvements
+
  - Implement advanced pagination with more complex datasets.
  - Add playback controls (e.g., next, previous, seek) for radio streams.
  - Enhance error messages with detailed user guidance.
 
 ###Conclusion
+
 The Radio Station App provides a simple yet complete solution for browsing, searching, and playing radio stations with offline support. The combination of Jetpack Compose, Retrofit, Room, and ExoPlayer delivers a smooth and modern user experience.
 
 Feel free to reach out for any questions or suggestions regarding this project!
 
 Author: Michail Mallis
-
 GitHub: zapmxl
